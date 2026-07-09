@@ -1,0 +1,29 @@
+{
+  "name": "vesion-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vesion — software engineering company platform: marketing site, client dashboard, admin dashboard, REST API.",
+  "author": "Vesion Engineering",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\"",
+    "db:migrate": "pnpm --filter @vesion/api db:migrate",
+    "db:deploy": "pnpm --filter @vesion/api db:deploy",
+    "db:seed": "pnpm --filter @vesion/api db:seed",
+    "db:studio": "pnpm --filter @vesion/api db:studio"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "turbo": "^2.1.2"
+  }
+}

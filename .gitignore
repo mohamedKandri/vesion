@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+.next/
+coverage/
+.turbo/
+*.log
+.env
+.env.local
+.env.*.local
+uploads/
+playwright-report/
+test-results/
+.DS_Store
+Thumbs.db
