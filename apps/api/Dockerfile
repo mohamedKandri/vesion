@@ -2,7 +2,9 @@
 # Multi-stage build: install → build → minimal runtime.
 
 FROM node:20-alpine AS base
-RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
+# openssl lets Prisma detect the right engine variant (without it,
+# it falls back to openssl-1.1.x which can't load on this image)
+RUN apk add --no-cache openssl && corepack enable && corepack prepare pnpm@9.12.0 --activate
 WORKDIR /app
 
 # ── Dependencies ───────────────────────────────────────────────
@@ -22,7 +24,7 @@ RUN pnpm prisma generate && pnpm build && pnpm prune --prod
 
 # ── Runtime ────────────────────────────────────────────────────
 FROM node:20-alpine AS runtime
-RUN apk add --no-cache dumb-init && addgroup -S vesion && adduser -S vesion -G vesion
+RUN apk add --no-cache dumb-init openssl && addgroup -S vesion && adduser -S vesion -G vesion
 WORKDIR /app
 ENV NODE_ENV=production
 
