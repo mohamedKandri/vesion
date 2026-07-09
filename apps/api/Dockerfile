@@ -26,14 +26,20 @@ RUN apk add --no-cache dumb-init && addgroup -S vesion && adduser -S vesion -G v
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=build --chown=vesion:vesion /app/apps/api/dist ./dist
-COPY --from=build --chown=vesion:vesion /app/apps/api/node_modules ./node_modules
-COPY --from=build --chown=vesion:vesion /app/apps/api/prisma ./prisma
-COPY --from=build --chown=vesion:vesion /app/apps/api/package.json ./
+# node_modules is split across the workspace root (hoisted) and the
+# package-local dir (version overrides) — both must be preserved at
+# the same relative depth as the build stage for module resolution
+# to find everything.
+COPY --from=build --chown=vesion:vesion /app/node_modules ./node_modules
+COPY --from=build --chown=vesion:vesion /app/apps/api/node_modules ./apps/api/node_modules
+COPY --from=build --chown=vesion:vesion /app/apps/api/dist ./apps/api/dist
+COPY --from=build --chown=vesion:vesion /app/apps/api/prisma ./apps/api/prisma
+COPY --from=build --chown=vesion:vesion /app/apps/api/package.json ./apps/api/package.json
 
 RUN mkdir -p /app/uploads && chown vesion:vesion /app/uploads
 USER vesion
 
+WORKDIR /app/apps/api
 EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD wget -qO- http://127.0.0.1:4000/api/v1/health || exit 1
