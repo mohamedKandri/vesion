@@ -1,4 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import type { Request } from 'express';
@@ -52,7 +53,7 @@ export class AuditInterceptor implements NestInterceptor {
               action: `${resource}.${request.method.toLowerCase()}`,
               entityType: resource,
               entityId,
-              metadata: this.sanitize(request.body),
+              metadata: this.sanitize(request.body) as Prisma.InputJsonValue | undefined,
               ip: request.ip,
               userAgent: request.headers['user-agent']?.slice(0, 255),
             },
