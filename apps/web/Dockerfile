@@ -28,9 +28,11 @@ RUN apk add --no-cache dumb-init && addgroup -S vesion && adduser -S vesion -G v
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
 
+# With outputFileTracingRoot at the monorepo root, the standalone
+# bundle nests the app under apps/web with node_modules at its root.
 COPY --from=build --chown=vesion:vesion /app/apps/web/.next/standalone ./
-COPY --from=build --chown=vesion:vesion /app/apps/web/.next/static ./.next/static
-COPY --from=build --chown=vesion:vesion /app/apps/web/public ./public
+COPY --from=build --chown=vesion:vesion /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build --chown=vesion:vesion /app/apps/web/public ./apps/web/public
 
 USER vesion
 EXPOSE 3000
@@ -38,4 +40,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD wget -qO- http://127.0.0.1:3000 >/dev/null || exit 1
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["node", "server.js"]
+CMD ["node", "apps/web/server.js"]
