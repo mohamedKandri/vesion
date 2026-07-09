@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function FaqPage() {
   const faq = (await serverFetch<FaqItem[]>('/faq', 300)) ?? [];
-  const categories = [...new Set(faq.map((f) => f.category))];
+  const categories = Array.from(new Set(faq.map((f) => f.category)));
 
   return (
     <>

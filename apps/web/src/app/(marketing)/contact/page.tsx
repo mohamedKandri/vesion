@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { SectionHeading } from '@/components/marketing/section';
 import { ContactForm } from './contact-form';
 import { SITE } from '@/content/site';
@@ -56,7 +57,9 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <ContactForm />
+        <Suspense fallback={null}>
+          <ContactForm />
+        </Suspense>
       </div>
     </section>
   );
