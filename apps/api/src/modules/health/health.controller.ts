@@ -8,7 +8,7 @@ import {
 } from '@nestjs/terminus';
 import Redis from 'ioredis';
 import { PrismaService } from '../../database/prisma.service';
-import { REDIS_CLIENT } from '../../infrastructure/redis/redis.module';
+import { REDIS_CLIENT } from '../../infrastructure/redis/redis.constants';
 import { Public } from '../../common/decorators/public.decorator';
 
 @ApiTags('Health')
