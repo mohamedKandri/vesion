@@ -7,7 +7,7 @@ WORKDIR /app
 
 # ── Dependencies ───────────────────────────────────────────────
 FROM base AS deps
-COPY pnpm-workspace.yaml package.json ./
+COPY .npmrc pnpm-workspace.yaml package.json ./
 COPY apps/api/package.json apps/api/
 RUN pnpm install --frozen-lockfile=false --filter @vesion/api...
 

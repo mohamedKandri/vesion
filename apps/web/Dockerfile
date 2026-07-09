@@ -5,7 +5,7 @@ WORKDIR /app
 
 # ── Dependencies ───────────────────────────────────────────────
 FROM base AS deps
-COPY pnpm-workspace.yaml package.json ./
+COPY .npmrc pnpm-workspace.yaml package.json ./
 COPY apps/web/package.json apps/web/
 RUN pnpm install --frozen-lockfile=false --filter @vesion/web...
 
